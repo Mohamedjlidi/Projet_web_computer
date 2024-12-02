@@ -1,23 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [counter, setCounter] = useState(0);
+  const [showAlert, setShowAlert] = useState(false); // État pour afficher l'alerte personnalisée
+  const [animation, setAnimation] = useState("");
+
+  const increment = () => {
+    setCounter(counter + 1);
+    setAnimation("increase");
+    setTimeout(() => setAnimation(""), 200); // Réinitialiser après l'animation
+  };
+
+  const decrement = () => {
+    if (counter > 0) {
+      setCounter(counter - 1);
+      setAnimation("decrease");
+      setTimeout(() => setAnimation(""), 200); // Réinitialiser après l'animation
+    } else {
+      setShowAlert(true); // Afficher l'alerte personnalisée
+    }
+  };
+
+  const closeAlert = () => {
+    setShowAlert(false); // Fermer l'alerte
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1 className={`counter ${animation}`}>Compteur : {counter}</h1>
+      <div>
+        <button className="button decrement" onClick={decrement}>
+          -
+        </button>
+        <button className="button increment" onClick={increment}>
+          +
+        </button>
+      </div>
+
+      {/* Alerte personnalisée */}
+      {showAlert && (
+        <div className="alert">
+          <div className="alert-content">
+            <p>Le compteur ne peut pas descendre en dessous de zéro !</p>
+            <button className="alert-close" onClick={closeAlert}>
+              X
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
